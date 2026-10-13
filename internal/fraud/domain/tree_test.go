@@ -228,15 +228,15 @@ func TestSigmoidViaScore(t *testing.T) {
 		}
 	})
 
-	t.Run("negative score sigmoid > 0.5", func(t *testing.T) {
+	t.Run("negative score sigmoid < 0.5", func(t *testing.T) {
 		m := smallModel(-0.1)
 		features := make([]float64, 10)
 		s, err := m.Score(features)
 		if err != nil {
 			t.Fatalf("Score() error = %v", err)
 		}
-		if s <= 0.5 {
-			t.Errorf("Score = %v, want > 0.5", s)
+		if s >= 0.5 {
+			t.Errorf("Score = %v, want < 0.5", s)
 		}
 	})
 

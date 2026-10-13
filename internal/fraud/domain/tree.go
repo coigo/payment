@@ -73,12 +73,12 @@ func (m *TreeModel) Score (features []float64) (float64, error) {
 	return sigmoid(score), nil
 }
 
-func sigmoid (x float64) float64 {
+func sigmoid(x float64) float64 {
 	if x >= 0 {
 		z := expNeg(x)
 		return 1 / (1 + z)
 	}
-	z := expNeg(x)
+	z := expNeg(-x)
 	return z / (1 + z)
 }
 
@@ -100,7 +100,7 @@ func expNeg (x float64) float64 {
 		sum += term
 	}
 
-	for ; half > 0; half++ {
+	for ; half > 0; half-- {
 		sum *= sum
 	}
 	return 1/sum
