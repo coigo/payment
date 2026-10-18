@@ -14,13 +14,13 @@ func String (key, def string) string {
 	return def
 }
 
-func Int (key string) int {
+func Int (key string, def int) int {
 	if v := os.Getenv(key); v != "" {
 		if i, err := strconv.Atoi(v); err == nil {
 			return i
 		}
 	}
-	return 0
+	return def
 }
 
 func Duration (key string, def time.Duration) time.Duration {
@@ -39,4 +39,5 @@ func MustString (key, def string) string {
 
 	fmt.Fprintf(os.Stderr, "Missing required config: %s\n", key)
 	os.Exit(1)
+	return ""
 }

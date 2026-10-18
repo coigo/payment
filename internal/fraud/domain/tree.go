@@ -15,7 +15,7 @@ type Tree struct {
 type TreeModel struct {
 	Version string	`json:"version"`
 	Features int 	`json:"features"`
-	Baseline int 	`json:"baseline"`
+	Baseline float64 `json:"baseline"`
 	Trees []Tree 	`json:"trees"`
 }
 

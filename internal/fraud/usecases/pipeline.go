@@ -80,7 +80,7 @@ func NewPipeline(
 	p.batcher = batch.New(batchSize, batchWait, func(_ context.Context, vectors [][]float64) ([]float64, error) {
 		scores := make([]float64, len(vectors))
 		for i, v := range vectors {
-			s, err := p.model.Score(v)
+			s, err := p.model.Score(p.padFeatures(v))
 			if err != nil {
 				p.logger.Warn("model scoring failed", "error", err)
 				return nil, err
@@ -105,6 +105,15 @@ func NewPipeline(
 func (p *Pipeline) Close() {
 	p.batcher.Close()
 	p.velocity.Close()
+}
+
+func (p *Pipeline) padFeatures(v []float64) []float64 {
+	if len(v) >= p.model.Features {
+		return v
+	}
+	out := make([]float64, p.model.Features)
+	copy(out, v)
+	return out
 }
 
 func (p *Pipeline) Score(ctx context.Context, attempt domain.Attempt) (Decision, []fsm.Transition, error) {
