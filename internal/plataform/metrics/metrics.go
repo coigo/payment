@@ -53,11 +53,11 @@ func NewCounter(name, help string, labels ...string) *prometheus.CounterVec {
 		Help: help,
 	}, labels)
 }
-func NewGauge(name, help string, labels ...string) *prometheus.GaugeVec {
-	return prometheus.NewGaugeVec(prometheus.GaugeOpts{
+func NewGauge(name, help string) prometheus.Gauge {
+	return prometheus.NewGauge(prometheus.GaugeOpts{
 		Name: name,
 		Help: help,
-	}, labels)
+	})
 }
 
 func NewGaugeFunc (name, help string, fn func() float64) {
@@ -65,4 +65,11 @@ func NewGaugeFunc (name, help string, fn func() float64) {
 		Name: name, 
 		Help: help,
 	}, fn)
+}
+
+func NewGaugeVec (name, help string, labels ...string) *prometheus.GaugeVec {
+	return prometheus.NewGaugeVec(prometheus.GaugeOpts{
+		Name: name, 
+		Help: help,
+	}, labels)
 }
