@@ -47,7 +47,7 @@ type Repository interface {
 	ListReviews(ctx context.Context, status string, lint int) ([]ReviewEntry, error)
 	RecentPayments(ctx context.Context, limit int) ([]PaymentEntry, error)
 	
-	
+	DecisionRepository
 }
 
 type HistoryEntry struct {

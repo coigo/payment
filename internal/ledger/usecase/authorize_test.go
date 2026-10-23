@@ -79,6 +79,14 @@ func (f *fakeRepo) RecentPayments(ctx context.Context, limit int) ([]usecase.Pay
 	return []usecase.PaymentEntry{{PaymentId: "pay-1"}}, nil
 }
 
+func (f *fakeRepo) ReviewCase(ctx context.Context, paymentId string) (usecase.ReviewCase, bool, error) {
+	return usecase.ReviewCase{}, false, nil
+}
+
+func (f *fakeRepo) ApplyDecision(ctx context.Context, cmd usecase.DecisionCommand) (bool, error) {
+	return true, nil
+}
+
 type fakeFraud struct {
 	decision domain.Decision
 	err      error

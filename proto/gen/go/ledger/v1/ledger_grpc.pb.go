@@ -19,7 +19,11 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	LedgerService_Authorize_FullMethodName = "/ledger.v1.LedgerService/Authorize"
+	LedgerService_Authorize_FullMethodName         = "/ledger.v1.LedgerService/Authorize"
+	LedgerService_GetAccountHistory_FullMethodName = "/ledger.v1.LedgerService/GetAccountHistory"
+	LedgerService_ListReviews_FullMethodName       = "/ledger.v1.LedgerService/ListReviews"
+	LedgerService_DecideReview_FullMethodName      = "/ledger.v1.LedgerService/DecideReview"
+	LedgerService_GetRecentPayments_FullMethodName = "/ledger.v1.LedgerService/GetRecentPayments"
 )
 
 // LedgerServiceClient is the client API for LedgerService service.
@@ -27,6 +31,10 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type LedgerServiceClient interface {
 	Authorize(ctx context.Context, in *AuthorizeRequest, opts ...grpc.CallOption) (*AuthorizeResponse, error)
+	GetAccountHistory(ctx context.Context, in *GetAccountHistoryRequest, opts ...grpc.CallOption) (*GetAccountHistoryResponse, error)
+	ListReviews(ctx context.Context, in *ListReviewsRequest, opts ...grpc.CallOption) (*ListReviewsResponse, error)
+	DecideReview(ctx context.Context, in *DecideReviewRequest, opts ...grpc.CallOption) (*DecideReviewResponse, error)
+	GetRecentPayments(ctx context.Context, in *GetRecentPaymentsRequest, opts ...grpc.CallOption) (*GetRecentPaymentsResponse, error)
 }
 
 type ledgerServiceClient struct {
@@ -47,11 +55,55 @@ func (c *ledgerServiceClient) Authorize(ctx context.Context, in *AuthorizeReques
 	return out, nil
 }
 
+func (c *ledgerServiceClient) GetAccountHistory(ctx context.Context, in *GetAccountHistoryRequest, opts ...grpc.CallOption) (*GetAccountHistoryResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetAccountHistoryResponse)
+	err := c.cc.Invoke(ctx, LedgerService_GetAccountHistory_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *ledgerServiceClient) ListReviews(ctx context.Context, in *ListReviewsRequest, opts ...grpc.CallOption) (*ListReviewsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ListReviewsResponse)
+	err := c.cc.Invoke(ctx, LedgerService_ListReviews_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *ledgerServiceClient) DecideReview(ctx context.Context, in *DecideReviewRequest, opts ...grpc.CallOption) (*DecideReviewResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(DecideReviewResponse)
+	err := c.cc.Invoke(ctx, LedgerService_DecideReview_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *ledgerServiceClient) GetRecentPayments(ctx context.Context, in *GetRecentPaymentsRequest, opts ...grpc.CallOption) (*GetRecentPaymentsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetRecentPaymentsResponse)
+	err := c.cc.Invoke(ctx, LedgerService_GetRecentPayments_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // LedgerServiceServer is the server API for LedgerService service.
 // All implementations must embed UnimplementedLedgerServiceServer
 // for forward compatibility.
 type LedgerServiceServer interface {
 	Authorize(context.Context, *AuthorizeRequest) (*AuthorizeResponse, error)
+	GetAccountHistory(context.Context, *GetAccountHistoryRequest) (*GetAccountHistoryResponse, error)
+	ListReviews(context.Context, *ListReviewsRequest) (*ListReviewsResponse, error)
+	DecideReview(context.Context, *DecideReviewRequest) (*DecideReviewResponse, error)
+	GetRecentPayments(context.Context, *GetRecentPaymentsRequest) (*GetRecentPaymentsResponse, error)
 	mustEmbedUnimplementedLedgerServiceServer()
 }
 
@@ -64,6 +116,18 @@ type UnimplementedLedgerServiceServer struct{}
 
 func (UnimplementedLedgerServiceServer) Authorize(context.Context, *AuthorizeRequest) (*AuthorizeResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method Authorize not implemented")
+}
+func (UnimplementedLedgerServiceServer) GetAccountHistory(context.Context, *GetAccountHistoryRequest) (*GetAccountHistoryResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method GetAccountHistory not implemented")
+}
+func (UnimplementedLedgerServiceServer) ListReviews(context.Context, *ListReviewsRequest) (*ListReviewsResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method ListReviews not implemented")
+}
+func (UnimplementedLedgerServiceServer) DecideReview(context.Context, *DecideReviewRequest) (*DecideReviewResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method DecideReview not implemented")
+}
+func (UnimplementedLedgerServiceServer) GetRecentPayments(context.Context, *GetRecentPaymentsRequest) (*GetRecentPaymentsResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method GetRecentPayments not implemented")
 }
 func (UnimplementedLedgerServiceServer) mustEmbedUnimplementedLedgerServiceServer() {}
 func (UnimplementedLedgerServiceServer) testEmbeddedByValue()                       {}
@@ -104,6 +168,78 @@ func _LedgerService_Authorize_Handler(srv interface{}, ctx context.Context, dec 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _LedgerService_GetAccountHistory_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetAccountHistoryRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(LedgerServiceServer).GetAccountHistory(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: LedgerService_GetAccountHistory_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(LedgerServiceServer).GetAccountHistory(ctx, req.(*GetAccountHistoryRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _LedgerService_ListReviews_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListReviewsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(LedgerServiceServer).ListReviews(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: LedgerService_ListReviews_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(LedgerServiceServer).ListReviews(ctx, req.(*ListReviewsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _LedgerService_DecideReview_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DecideReviewRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(LedgerServiceServer).DecideReview(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: LedgerService_DecideReview_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(LedgerServiceServer).DecideReview(ctx, req.(*DecideReviewRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _LedgerService_GetRecentPayments_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetRecentPaymentsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(LedgerServiceServer).GetRecentPayments(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: LedgerService_GetRecentPayments_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(LedgerServiceServer).GetRecentPayments(ctx, req.(*GetRecentPaymentsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // LedgerService_ServiceDesc is the grpc.ServiceDesc for LedgerService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -114,6 +250,22 @@ var LedgerService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Authorize",
 			Handler:    _LedgerService_Authorize_Handler,
+		},
+		{
+			MethodName: "GetAccountHistory",
+			Handler:    _LedgerService_GetAccountHistory_Handler,
+		},
+		{
+			MethodName: "ListReviews",
+			Handler:    _LedgerService_ListReviews_Handler,
+		},
+		{
+			MethodName: "DecideReview",
+			Handler:    _LedgerService_DecideReview_Handler,
+		},
+		{
+			MethodName: "GetRecentPayments",
+			Handler:    _LedgerService_GetRecentPayments_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
